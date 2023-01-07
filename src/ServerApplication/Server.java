@@ -1,112 +1,88 @@
 package ServerApplication;
 
-import Services.Service;
-
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    public static void main( String[] args ) throws Exception {
-        String clientSentence, response = null;
-        int port;
-        Socket connectionSocket = null;
-        BufferedReader inFromClient;
-        PrintStream outToClient;
-        Service service = new Service(); 
+    int port;
 
-        /* port is the argument passed to program */
-        port = 4567;
+    Socket clientSocket = null;
+    ServerSocket serverSocket = null;
 
-        /* Create socket for port */
-        ServerSocket welcomeSocket = new ServerSocket( port );
+    //     Input output streams
+    BufferedReader inFromClient;
+    PrintStream outToClient;
 
-        System.out.println("Server is up and running. Waiting on port " + welcomeSocket.getLocalPort());
+    //    Ingoing outgoing messages
+    String clientSentence;
+    String response;
 
-        /* Wait endlessly for connections */
-        while(true) {
-            /* Accept the connection */
-            connectionSocket = welcomeSocket.accept();
+    public Server() {
+    }
 
+    public Server(int port, Socket clientSocket, ServerSocket serverSocket, BufferedReader inFromClient, PrintStream outToClient) {
+        this.port = port;
+        this.clientSocket = clientSocket;
+        this.serverSocket = serverSocket;
+        this.inFromClient = inFromClient;
+        this.outToClient = outToClient;
+    }
 
-            /* Create a reading stream to the socket */
-            inFromClient = new BufferedReader( new InputStreamReader( connectionSocket.getInputStream() ) );
+    public int getPort() {
+        return port;
+    }
 
-            /* Create a writing stream to the socket */
-            outToClient = new PrintStream( connectionSocket.getOutputStream() );
+    public void setPort(int port) {
+        this.port = port;
+    }
 
-            System.out.println("Accepted connection from: " + connectionSocket.getInetAddress() );
+    public Socket getClientSocket() {
+        return clientSocket;
+    }
 
-            /* Wait endlessly for specific client to type messages */
-            while ( true ) {
-                clientSentence = null;
-                try {
-                    /* Read client's message through the socket's input buffer */
-                    clientSentence = inFromClient.readLine();
-                }
-                catch (IOException e) {
-                    System.out.println( connectionSocket.getInetAddress() + " broke the connection." );
-                    break;
-                }
+    public void setClientSocket(Socket connectionSocket) {
+        this.clientSocket = connectionSocket;
+    }
 
-                /* Output to screen the message received by the client */
-                System.out.println( "Message Received: " + clientSentence );
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
 
-                if (clientSentence.equals("ListAuctions")) {
-                    response = service.listAuctions().toString();
-                }
+    public void setServerSocket(ServerSocket welcomeSocket) {
+        this.serverSocket = welcomeSocket;
+    }
 
-                if (clientSentence.equals("2")) {
+    public BufferedReader getInFromClient() {
+        return inFromClient;
+    }
 
-                }
+    public void setInFromClient(BufferedReader inFromClient) {
+        this.inFromClient = inFromClient;
+    }
 
-                if (clientSentence.equals("3")) {
+    public PrintStream getOutToClient() {
+        return outToClient;
+    }
 
-                }
+    public void setOutToClient(PrintStream outToClient) {
+        this.outToClient = outToClient;
+    }
 
-                if (clientSentence.equals("4")) {
+    public String getClientSentence() {
+        return clientSentence;
+    }
 
-                }
+    public void setClientSentence(String clientSentence) {
+        this.clientSentence = clientSentence;
+    }
 
-                if (clientSentence.equals("5")) {
+    public String getResponse() {
+        return response;
+    }
 
-                }
-
-                if (clientSentence.equals("6")) {
-
-                }
-
-                if (clientSentence.equals("7")) {
-
-                }
-
-
-
-                /* If message is exit then terminate specific connection - exit the loop */
-                if ( clientSentence.equals( "exit" ) ) {
-                    System.out.println( "Closing connection with " + connectionSocket.getInetAddress() + "." );
-                    break;
-                }
-
-
-
-                /* Send it back through socket's output buffer */
-                outToClient.println( response );
-            }
-            /* Close input stream */
-            inFromClient.close();
-
-            /* Close output stream */
-            outToClient.close();
-
-            /* Close TCP connection with client on specific port */
-            connectionSocket.close();
-
-            /* Wait for more connections */
-            System.out.println( "Server waiting at port: " + welcomeSocket.getLocalPort() );
-        }
+    public void setResponse(String response) {
+        this.response = response;
     }
 }

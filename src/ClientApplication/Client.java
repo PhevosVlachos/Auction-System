@@ -7,55 +7,107 @@ import java.net.Socket;
 
 public class Client {
 
-    public static void main(String[] args) throws Exception {
-        String messageToServer = null;
-        String serverResponse = null;
-        String serverMachine;
-        int port;
+    int port;
+    String serverMachine;
+    String messageToServer = null;
+    String serverResponse = null;
 
-        /* The first argument is the server's name */
-        serverMachine = "localhost";
+    Socket clientSocket;
 
-        /* The second argument the port that the server accepts connections */
-        port = 4567;
+    BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader inFromServer;
 
-        /* Create a buffer to hold the user's input */
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-
-        /* Create the client socket according to the server's address and port */
-        Socket clientSocket = new Socket(serverMachine, port);
-
-        /* Display a connection established message  */
-        System.out.println("Connected to: " + clientSocket.getInetAddress() + " on port " + port);
-
-        /* Create a writing buffer to the socket */
-        PrintStream outToServer = new PrintStream(clientSocket.getOutputStream());
-
-        /* Create a reading buffer to the socket */
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-        while (true) {
+    PrintStream outToServer;
 
 
-            /* Get user's input */
-            messageToServer = inFromUser.readLine();
+    public Client(){}
 
-            /* Send the message to server */
-            outToServer.println(messageToServer);
-
-            /* Stop infinite loop if user wants to stop getting echos by typing exit */
-            if (messageToServer.equals("exit"))
-                break;
-
-            /* Read the server's response */
-            serverResponse = inFromServer.readLine();
-
-            /* Display echoed message from server */
-            System.out.println(serverResponse);
-        }
-
-        System.out.println("Closing socket.");
-        clientSocket.close();
+    public Client(int port, String serverMachine, String messageToServer, String serverResponse, Socket clientSocket, BufferedReader inFromUser, BufferedReader inFromServer, PrintStream outToServer) {
+        this.port = port;
+        this.serverMachine = serverMachine;
+        this.messageToServer = messageToServer;
+        this.serverResponse = serverResponse;
+        this.clientSocket = clientSocket;
+        this.inFromUser = inFromUser;
+        this.inFromServer = inFromServer;
+        this.outToServer = outToServer;
     }
 
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getServerMachine() {
+        return serverMachine;
+    }
+
+    public void setServerMachine(String serverMachine) {
+        this.serverMachine = serverMachine;
+    }
+
+    public String getMessageToServer() {
+        return messageToServer;
+    }
+
+    public void setMessageToServer(String messageToServer) {
+        this.messageToServer = messageToServer;
+    }
+
+    public String getServerResponse() {
+        return serverResponse;
+    }
+
+    public void setServerResponse(String serverResponse) {
+        this.serverResponse = serverResponse;
+    }
+
+    public Socket getClientSocket() {
+        return clientSocket;
+    }
+
+    public void setClientSocket(Socket clientSocket) {
+        this.clientSocket = clientSocket;
+    }
+
+    public BufferedReader getInFromUser() {
+        return inFromUser;
+    }
+
+    public void setInFromUser(BufferedReader inFromUser) {
+        this.inFromUser = inFromUser;
+    }
+
+    public BufferedReader getInFromServer() {
+        return inFromServer;
+    }
+
+    public void setInFromServer(BufferedReader inFromServer) {
+        this.inFromServer = inFromServer;
+    }
+
+    public PrintStream getOutToServer() {
+        return outToServer;
+    }
+
+    public void setOutToServer(PrintStream outToServer) {
+        this.outToServer = outToServer;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "port=" + port +
+                ", serverMachine='" + serverMachine + '\'' +
+                ", messageToServer='" + messageToServer + '\'' +
+                ", serverResponse='" + serverResponse + '\'' +
+                ", clientSocket=" + clientSocket +
+                ", inFromUser=" + inFromUser +
+                ", inFromServer=" + inFromServer +
+                ", outToServer=" + outToServer +
+                '}';
+    }
 }
