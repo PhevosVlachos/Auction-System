@@ -39,9 +39,10 @@ public class TCPClient {
 
 
             /* Stop infinite loop if user wants to stop getting echos by typing exit */
-            if (myClient.messageToServer.equals("exit"))
+            if (myClient.messageToServer.equals("7")) {
+                System.out.println("Goodbye");
                 break;
-
+            }
             /* Read the server's response and echo message*/
             service.receiveFromServer(myClient);
 
@@ -86,10 +87,11 @@ public class TCPClient {
                     break;
 
                 case "6":
+                    System.out.println("Withdrawing from Auction");
+                    service.sendToServer(myClient);
+                    service.receiveFromServer(myClient);
                     break;
 
-                case "7":
-                    break;
             }
 
 

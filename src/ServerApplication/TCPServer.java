@@ -72,7 +72,11 @@ public class TCPServer {
                         System.out.println(bid.toString());
                         System.out.println(auctions.get(0).toString());
 
-                    case "exit":
+                    case "6":
+
+                        break;
+
+                    case "7":
                         System.out.println("Closing connection with " + myServer.clientSocket.getInetAddress() + ".");
                         break;
 
