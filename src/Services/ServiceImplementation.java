@@ -82,6 +82,12 @@ public class ServiceImplementation implements Service {
     }
 
     @Override
+    public void receiveFromClient(Server myServer) throws Exception {
+        myServer.setClientSentence(myServer.getInFromClient().readLine());
+        System.out.println("Message Received: " + myServer.getClientSentence());
+    }
+
+    @Override
     public void runServer(Server myServer, int port) throws Exception {
         ServerSocket serverSocket = new ServerSocket(port);
 
@@ -97,4 +103,9 @@ public class ServiceImplementation implements Service {
     }
 
 
+    @Override
+    public void sendToClient(Server myServer) throws Exception {
+        myServer.setResponse( myServer.getClientSentence());
+        myServer.getOutToClient().println(myServer.getResponse());
+    }
 }

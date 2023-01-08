@@ -34,6 +34,9 @@ public interface Service {
 
     void acceptConnections(Server myServer) throws Exception;
 
+    void receiveFromClient(Server myServer) throws Exception;
+
+    void sendToClient(Server myServer)  throws Exception;
 
 
 

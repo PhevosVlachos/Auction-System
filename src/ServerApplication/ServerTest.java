@@ -56,33 +56,7 @@ public class ServerTest {
                 /* Output to screen the message received by the client */
                 System.out.println( "Message Received: " + clientSentence );
 
-                if (clientSentence.equals("ListAuctions")) {
 
-                }
-
-                if (clientSentence.equals("2")) {
-
-                }
-
-                if (clientSentence.equals("3")) {
-
-                }
-
-                if (clientSentence.equals("4")) {
-
-                }
-
-                if (clientSentence.equals("5")) {
-
-                }
-
-                if (clientSentence.equals("6")) {
-
-                }
-
-                if (clientSentence.equals("7")) {
-
-                }
 
 
 
