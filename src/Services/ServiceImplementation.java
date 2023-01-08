@@ -81,11 +81,7 @@ public class ServiceImplementation implements Service {
 
     }
 
-    @Override
-    public void receiveFromClient(Server myServer) throws Exception {
-        myServer.setClientSentence(myServer.getInFromClient().readLine());
-        System.out.println("Message Received: " + myServer.getClientSentence());
-    }
+
 
     @Override
     public void runServer(Server myServer, int port) throws Exception {
@@ -96,16 +92,30 @@ public class ServiceImplementation implements Service {
 
 
         System.out.println("Server is up and running. Waiting on port " + serverSocket.getLocalPort());
-
-
-
-
     }
-
 
     @Override
     public void sendToClient(Server myServer) throws Exception {
         myServer.setResponse( myServer.getClientSentence());
         myServer.getOutToClient().println(myServer.getResponse());
+    }
+
+    @Override
+    public void receiveFromClient(Server myServer) throws Exception {
+        myServer.setClientSentence(myServer.getInFromClient().readLine());
+        System.out.println("Message Received: " + myServer.getClientSentence());
+    }
+
+    @Override
+    public void sendToServer(Client myClient) throws Exception {
+        myClient.setMessageToServer(myClient.getInFromUser().readLine());
+        myClient.getOutToServer().println(myClient.getMessageToServer());
+    }
+
+    @Override
+    public void receiveFromServer(Client myClient) throws Exception {
+        myClient.setServerResponse(myClient.getInFromServer().readLine());
+        System.out.println("\nServer Responded:");
+        System.out.println(myClient.getServerResponse());
     }
 }

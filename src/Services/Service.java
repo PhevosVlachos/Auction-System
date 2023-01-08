@@ -37,6 +37,10 @@ public interface Service {
     void receiveFromClient(Server myServer) throws Exception;
 
     void sendToClient(Server myServer)  throws Exception;
+    
+    void sendToServer(Client myClient) throws Exception;
+    
+    void receiveFromServer(Client myClient) throws Exception;
 
 
 

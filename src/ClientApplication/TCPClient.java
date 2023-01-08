@@ -2,6 +2,7 @@ package ClientApplication;
 
 import Services.ServiceImplementation;
 
+import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class TCPClient {
@@ -13,7 +14,7 @@ public class TCPClient {
         Client myClient = new Client();
 
 
-        service.connectToServer(myClient, "localhost", 4567);
+        service.connectToServer(myClient, "localhost", 4579);
 
         while (true) {
             System.out.println
@@ -41,33 +42,36 @@ public class TCPClient {
             if (myClient.messageToServer.equals("exit"))
                 break;
 
-            /* Read the server's response */
-            myClient.serverResponse = myClient.inFromServer.readLine();
-
-            if(myClient.serverResponse == "1"){
-
-                System.out.println("Please input a name:");
-            }
+            /* Read the server's response and echo message*/
+            service.receiveFromServer(myClient);
 
 
-
-            /* Display echoed message from server */
-            System.out.println("\nServer Responded:");
-            System.out.println(myClient.serverResponse);
-
-
-
-
-
-
-            if(myClient.serverResponse.equals("1")){
+            if (myClient.serverResponse.equals("1")) {
 
                 System.out.println("Please input a name:");
-                myClient.messageToServer = myClient.inFromUser.readLine();
-                myClient.outToServer.println(myClient.messageToServer);
+                service.sendToServer(myClient);
+                service.receiveFromServer(myClient);
+
+                System.out.println("Please enter a description for your item:");
+                service.sendToServer(myClient);
+                service.receiveFromServer(myClient);
+
+
+                System.out.println("Please enter a starting price:");
+                service.sendToServer(myClient);
+                service.receiveFromServer(myClient);
+
+                System.out.println
+                        (
+                                "Please enter a closing type from these options: " + "\n" +
+                                        "Set Time" + "\n" +
+                                        "Bid Time" + "\n "
+                        );
+                service.sendToServer(myClient);
+                service.receiveFromServer(myClient);
+
+
             }
-
-
 
 
         }
