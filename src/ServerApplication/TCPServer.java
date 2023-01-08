@@ -3,6 +3,9 @@ package ServerApplication;
 import Services.ServiceImplementation;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,19 +51,30 @@ public class TCPServer {
                         String closingType = myServer.clientSentence;
                         System.out.println("Closing Type :" + closingType);
                         
-                        Auction auction = new Auction("1", name, startingPrice, 0, closingType);
+                        Auction auction = new Auction("1", name, startingPrice, closingType, new ArrayList<Bid>());
                         auctions.add(auction);
                         System.out.println(auctions.toString());
-                        
-
-
 
                         break;
+
+                    case "4":
+                        service.sendToClient(myServer);
+                        service.receiveFromClient(myServer);
+                        double price = Double.parseDouble(myServer.clientSentence);
+                        System.out.println("Bidding price : " + price);
+
+
+
+                        Bid bid = new Bid(price, LocalTime.now(), auctions.get(0));
+
+                        auctions.get(0).allBids.add(bid);
+
+                        System.out.println(bid.toString());
+                        System.out.println(auctions.get(0).toString());
 
                     case "exit":
                         System.out.println("Closing connection with " + myServer.clientSocket.getInetAddress() + ".");
                         break;
-
 
                 }
 

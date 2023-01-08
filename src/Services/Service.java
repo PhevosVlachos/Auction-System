@@ -17,8 +17,7 @@ public interface Service {
 
     Bid placeBid() ;
 
-
-    void auctionRegister();
+    
 
 
     List<Auction> listAuctions();

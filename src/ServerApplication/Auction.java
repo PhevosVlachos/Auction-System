@@ -1,5 +1,10 @@
 package ServerApplication;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 public class Auction {
 
     String auctionID;
@@ -7,13 +12,17 @@ public class Auction {
     double startingPrice;
     double highestBid;
     String auctionType;
+    
+    List<Bid> allBids; 
+    
 
-    public Auction(String auctionID, String name, double startingPrice, double highestBid, String auctionType) {
+    public Auction(String auctionID, String name, double startingPrice, String auctionType, List<Bid> bids) {
         this.auctionID = auctionID;
         this.name = name;
         this.startingPrice = startingPrice;
-        this.highestBid = highestBid;
+        //this.highestBid = highestBid;
         this.auctionType = auctionType;
+        this.allBids = bids;
     }
 
     public String getAuctionID() {

@@ -45,33 +45,60 @@ public class TCPClient {
             /* Read the server's response and echo message*/
             service.receiveFromServer(myClient);
 
+            switch (myClient.serverResponse){
+                case "1":
+                    System.out.println("Please input a name:");
+                    service.sendToServer(myClient);
+                    service.receiveFromServer(myClient);
 
-            if (myClient.serverResponse.equals("1")) {
-
-                System.out.println("Please input a name:");
-                service.sendToServer(myClient);
-                service.receiveFromServer(myClient);
-
-                System.out.println("Please enter a description for your item:");
-                service.sendToServer(myClient);
-                service.receiveFromServer(myClient);
-
-
-                System.out.println("Please enter a starting price:");
-                service.sendToServer(myClient);
-                service.receiveFromServer(myClient);
-
-                System.out.println
-                        (
-                                "Please enter a closing type from these options: " + "\n" +
-                                        "Set Time" + "\n" +
-                                        "Bid Time" + "\n "
-                        );
-                service.sendToServer(myClient);
-                service.receiveFromServer(myClient);
+                    System.out.println("Please enter a description for your item:");
+                    service.sendToServer(myClient);
+                    service.receiveFromServer(myClient);
 
 
+                    System.out.println("Please enter a starting price:");
+                    service.sendToServer(myClient);
+                    service.receiveFromServer(myClient);
+
+                    System.out.println
+                            (
+                                    "Please enter a closing type from these options: " + "\n" +
+                                            "Set Time" + "\n" +
+                                            "Bid Time" + "\n "
+                            );
+                    service.sendToServer(myClient);
+                    service.receiveFromServer(myClient);
+                    break;
+
+                case "2":
+                    break;
+
+                case "3":
+                    break;
+
+                case "4":
+                    System.out.println("Please select a bidding price: ");
+                    service.sendToServer(myClient);
+                    service.receiveFromServer(myClient);
+                    break;
+
+                case "5":
+                    break;
+
+                case "6":
+                    break;
+
+                case "7":
+                    break;
             }
+
+
+
+
+
+
+
+
 
 
         }

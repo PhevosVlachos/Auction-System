@@ -27,10 +27,6 @@ public class ServiceImplementation implements Service {
         return null;
     }
 
-    @Override
-    public void auctionRegister() {
-
-    }
 
     @Override
     public List<Auction> listAuctions() {
