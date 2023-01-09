@@ -17,13 +17,13 @@ public interface Service {
 
     Bid placeBid() ;
 
-    
+
 
 
     List<Auction> listAuctions();
 
 
-    Bid checkHighest();
+    Double checkHighest(Auction auction);
 
 
     void connectToServer(Client myClient, String serverMachine, int port) throws Exception;

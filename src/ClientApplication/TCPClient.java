@@ -8,7 +8,7 @@ import java.util.Objects;
 public class TCPClient {
     public static void main(String[] args) throws Exception {
 
-        String testo;
+
 
         ServiceImplementation service = new ServiceImplementation();
         Client myClient = new Client();
