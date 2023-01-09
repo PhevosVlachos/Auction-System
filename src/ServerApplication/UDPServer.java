@@ -2,15 +2,12 @@ package ServerApplication;
 
 import Services.ServiceImplementation;
 
-import java.io.IOException;
-import java.sql.Time;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TCPServer {
+public class UDPServer {
 
     public static void main(String[] args) throws Exception {
         ServiceImplementation service = new ServiceImplementation();
@@ -20,14 +17,14 @@ public class TCPServer {
 
         service.runServer(myServer, 4579);
 
-        while (true) {
-            service.acceptConnections(myServer);
 
 
-            /* Wait endlessly for specific client to type messages */
             while (true) {
-                service.receiveFromClient(myServer);
+                myServer.inFromClient.setLength(myServer.maxLength);
 
+                service.receiveFromClient(myServer);
+                service.sendToClient(myServer);
+//
                 switch (myServer.clientSentence) {
 
                     case "1":
@@ -55,6 +52,8 @@ public class TCPServer {
                         auctions.add(auction);
                         System.out.println(auctions.toString());
 
+                        service.sendToClient(myServer);
+
                         break;
 
                     case "4":
@@ -77,7 +76,7 @@ public class TCPServer {
                         break;
 
                     case "7":
-                        System.out.println("Closing connection with " + myServer.clientSocket.getInetAddress() + ".");
+//                        System.out.println("Closing connection with " + myServer.clientSocket.getInetAddress() + ".");
                         break;
 
                 }
@@ -94,12 +93,12 @@ public class TCPServer {
 //                    break;
 //                }
 
-                myServer.response = myServer.clientSentence;
-
-                /* Send it back through socket's output buffer */
-                myServer.outToClient.println(myServer.response);
-
+//                myServer.response = myServer.clientSentence;
+//
+//                /* Send it back through socket's output buffer */
+//                myServer.outToClient.println(myServer.response);
+//
             }
-        }
+
     }
 }

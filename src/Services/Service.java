@@ -26,7 +26,7 @@ public interface Service {
     Double checkHighest(Auction auction);
 
 
-    void connectToServer(Client myClient, String serverMachine, int port) throws Exception;
+    void getServer(Client myClient, String serverMachine, int port) throws Exception;
 
 
     void runServer(Server myServer, int port) throws Exception;

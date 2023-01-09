@@ -3,34 +3,33 @@ package ClientApplication;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.Socket;
+import java.net.*;
 
 public class Client {
 
     int port;
+    int maxLength = 255;
+
+
     String serverMachine;
-    String messageToServer = null;
-    String serverResponse = null;
+    String messageToServer;
+    String serverResponse;
 
-    Socket clientSocket;
+   InetAddress serverAdress;
 
-    BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-    BufferedReader inFromServer;
+   DatagramSocket socket;
+   DatagramPacket inFromServer;
+   DatagramPacket outToServer;
 
-    PrintStream outToServer;
 
+    public Client() throws SocketException {}
 
-    public Client(){}
+    public DatagramSocket getSocket() {
+        return socket;
+    }
 
-    public Client(int port, String serverMachine, String messageToServer, String serverResponse, Socket clientSocket, BufferedReader inFromUser, BufferedReader inFromServer, PrintStream outToServer) {
-        this.port = port;
-        this.serverMachine = serverMachine;
-        this.messageToServer = messageToServer;
-        this.serverResponse = serverResponse;
-        this.clientSocket = clientSocket;
-        this.inFromUser = inFromUser;
-        this.inFromServer = inFromServer;
-        this.outToServer = outToServer;
+    public void setSocket(DatagramSocket socket) {
+        this.socket = socket;
     }
 
     public int getPort() {
@@ -65,37 +64,40 @@ public class Client {
         this.serverResponse = serverResponse;
     }
 
-    public Socket getClientSocket() {
-        return clientSocket;
-    }
 
-    public void setClientSocket(Socket clientSocket) {
-        this.clientSocket = clientSocket;
-    }
 
-    public BufferedReader getInFromUser() {
-        return inFromUser;
-    }
-
-    public void setInFromUser(BufferedReader inFromUser) {
-        this.inFromUser = inFromUser;
-    }
-
-    public BufferedReader getInFromServer() {
+    public DatagramPacket getInFromServer() {
         return inFromServer;
     }
 
-    public void setInFromServer(BufferedReader inFromServer) {
+    public void setInFromServer(DatagramPacket inFromServer) {
         this.inFromServer = inFromServer;
     }
 
-    public PrintStream getOutToServer() {
+    public DatagramPacket getOutToServer() {
         return outToServer;
     }
 
-    public void setOutToServer(PrintStream outToServer) {
+    public void setOutToServer(DatagramPacket outToServer) {
         this.outToServer = outToServer;
     }
+
+    public InetAddress getServerAdress() {
+        return serverAdress;
+    }
+
+    public void setServerAdress(InetAddress serverAdress) {
+        this.serverAdress = serverAdress;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
+    }
+
 
     @Override
     public String toString() {
@@ -104,8 +106,6 @@ public class Client {
                 ", serverMachine='" + serverMachine + '\'' +
                 ", messageToServer='" + messageToServer + '\'' +
                 ", serverResponse='" + serverResponse + '\'' +
-                ", clientSocket=" + clientSocket +
-                ", inFromUser=" + inFromUser +
                 ", inFromServer=" + inFromServer +
                 ", outToServer=" + outToServer +
                 '}';

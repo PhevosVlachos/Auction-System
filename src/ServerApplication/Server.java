@@ -2,32 +2,39 @@ package ServerApplication;
 
 import java.io.BufferedReader;
 import java.io.PrintStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 public class Server {
     int port;
+    int maxLength = 255;
+    byte[] buffer = new byte[maxLength];
 
-    Socket clientSocket = null;
-    ServerSocket serverSocket = null;
+    DatagramSocket socket = null;
 
     //     Input output streams
-    BufferedReader inFromClient;
-    PrintStream outToClient;
+    DatagramPacket inFromClient;
+    DatagramPacket outToClient;
 
     //    Ingoing outgoing messages
     String clientSentence;
-    String response;
+    byte[] response;
+
+
 
     public Server() {
     }
 
-    public Server(int port, Socket clientSocket, ServerSocket serverSocket, BufferedReader inFromClient, PrintStream outToClient) {
+    public Server(int port, int maxLength, byte[] buffer, DatagramSocket socket, DatagramPacket inFromClient, DatagramPacket outToClient, String clientSentence, byte[] response) {
         this.port = port;
-        this.clientSocket = clientSocket;
-        this.serverSocket = serverSocket;
+        this.maxLength = maxLength;
+        this.buffer = buffer;
+        this.socket = socket;
         this.inFromClient = inFromClient;
         this.outToClient = outToClient;
+        this.clientSentence = clientSentence;
+        this.response = response;
     }
 
     public int getPort() {
@@ -38,35 +45,28 @@ public class Server {
         this.port = port;
     }
 
-    public Socket getClientSocket() {
-        return clientSocket;
+
+    public DatagramSocket getSocket() {
+        return socket;
     }
 
-    public void setClientSocket(Socket connectionSocket) {
-        this.clientSocket = connectionSocket;
+    public void setSocket(DatagramSocket welcomeSocket) {
+        this.socket = welcomeSocket;
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket welcomeSocket) {
-        this.serverSocket = welcomeSocket;
-    }
-
-    public BufferedReader getInFromClient() {
+    public DatagramPacket getInFromClient() {
         return inFromClient;
     }
 
-    public void setInFromClient(BufferedReader inFromClient) {
+    public void setInFromClient(DatagramPacket inFromClient) {
         this.inFromClient = inFromClient;
     }
 
-    public PrintStream getOutToClient() {
+    public DatagramPacket getOutToClient() {
         return outToClient;
     }
 
-    public void setOutToClient(PrintStream outToClient) {
+    public void setOutToClient(DatagramPacket outToClient) {
         this.outToClient = outToClient;
     }
 
@@ -78,11 +78,27 @@ public class Server {
         this.clientSentence = clientSentence;
     }
 
-    public String getResponse() {
+    public byte[] getResponse() {
         return response;
     }
 
-    public void setResponse(String response) {
+    public void setResponse(byte[] response) {
         this.response = response;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
+    }
+
+    public byte[] getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(byte[] buffer) {
+        this.buffer = buffer;
     }
 }

@@ -2,21 +2,19 @@ package ClientApplication;
 
 import Services.ServiceImplementation;
 
-import java.sql.SQLOutput;
-import java.util.Objects;
+import java.net.InetAddress;
 
-public class TCPClient {
+public class UDPClient {
     public static void main(String[] args) throws Exception {
-
-
 
         ServiceImplementation service = new ServiceImplementation();
         Client myClient = new Client();
 
+        service.getServer(myClient, "localhost", 4579 );
 
-        service.connectToServer(myClient, "localhost", 4579);
 
         while (true) {
+
             System.out.println
                     ("\n" + "1. Enlist An Item" + "\n" +
                             "2. List Active Auctions" + "\n" +
@@ -28,14 +26,9 @@ public class TCPClient {
                             "Choose by typing 1-7:" + "\n"
                     );
 
-
-
             /* Get user's input */
-            myClient.messageToServer = myClient.inFromUser.readLine();
-
             /* Send the message to server */
-            myClient.outToServer.println(myClient.messageToServer);
-
+            service.sendToServer(myClient);
 
 
             /* Stop infinite loop if user wants to stop getting echos by typing exit */
@@ -43,9 +36,10 @@ public class TCPClient {
                 System.out.println("Goodbye");
                 break;
             }
+
             /* Read the server's response and echo message*/
             service.receiveFromServer(myClient);
-
+//
             switch (myClient.serverResponse){
                 case "1":
                     System.out.println("Please input a name:");
