@@ -12,17 +12,14 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class ServiceImplementation implements Service {
 
-
-    @Override
-    public Auction createAuction() {
-        return null;
-    }
 
     @Override
     public Bid placeBid() {
@@ -61,6 +58,12 @@ public class ServiceImplementation implements Service {
                 "Welcome to the Auction House!!! What would you like to do?" + "\n" + "\n"
                 );
 
+    }
+    
+    public String auctionId(){
+        byte[] array = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(array);
+        return new String(array, StandardCharsets.UTF_8);
     }
 
 

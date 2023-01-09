@@ -3,11 +3,14 @@ package ServerApplication;
 import Services.ServiceImplementation;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class TCPServer {
@@ -16,6 +19,8 @@ public class TCPServer {
         ServiceImplementation service = new ServiceImplementation();
         Server myServer = new Server();
         List<Auction> auctions = new ArrayList<>();
+
+
 
 
         service.runServer(myServer, 4579);
@@ -51,10 +56,13 @@ public class TCPServer {
                         String closingType = myServer.clientSentence;
                         System.out.println("Closing Type :" + closingType);
 
-                        Auction auction = new Auction("1", name, startingPrice, closingType, new ArrayList<Double>());
+                        Auction auction = new Auction(service.auctionId(), name, startingPrice, closingType, new ArrayList<Double>());
                         auctions.add(auction);
                         System.out.println(auctions.toString());
 
+                        break;
+                    case "2":
+                        System.out.println(auctions.toString());
                         break;
 
                     case "4":
