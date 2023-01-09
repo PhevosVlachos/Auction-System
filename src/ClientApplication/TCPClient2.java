@@ -2,10 +2,7 @@ package ClientApplication;
 
 import Services.ServiceImplementation;
 
-import java.sql.SQLOutput;
-import java.util.Objects;
-
-public class TCPClient {
+public class TCPClient2 {
     public static void main(String[] args) throws Exception {
 
 
@@ -109,4 +106,5 @@ public class TCPClient {
         myClient.clientSocket.close();
 
     }
+
 }
