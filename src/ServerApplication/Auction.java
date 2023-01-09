@@ -12,17 +12,21 @@ public class Auction {
     double startingPrice;
     double highestBid;
     String auctionType;
-    
-    List<Bid> allBids; 
-    
 
-    public Auction(String auctionID, String name, double startingPrice, String auctionType, List<Bid> bids) {
+    List<Double> allBids;
+
+
+    public Auction(String auctionID, String name, double startingPrice, String auctionType, List<Double> bids) {
         this.auctionID = auctionID;
         this.name = name;
         this.startingPrice = startingPrice;
         //this.highestBid = highestBid;
         this.auctionType = auctionType;
         this.allBids = bids;
+    }
+
+    public List<Double> getAllBids() {
+        return allBids;
     }
 
     public String getAuctionID() {

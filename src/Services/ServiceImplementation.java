@@ -12,6 +12,8 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ServiceImplementation implements Service {
@@ -34,8 +36,10 @@ public class ServiceImplementation implements Service {
     }
 
     @Override
-    public Bid checkHighest() {
-        return null;
+    public Double checkHighest(Auction auction) {
+        List<Double> bids  = new ArrayList<Double>(auction.getAllBids());
+        Collections.sort(bids);
+        return bids.get(0);
     }
 
     @Override

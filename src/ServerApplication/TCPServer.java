@@ -50,8 +50,8 @@ public class TCPServer {
                         service.receiveFromClient(myServer);
                         String closingType = myServer.clientSentence;
                         System.out.println("Closing Type :" + closingType);
-                        
-                        Auction auction = new Auction("1", name, startingPrice, closingType, new ArrayList<Bid>());
+
+                        Auction auction = new Auction("1", name, startingPrice, closingType, new ArrayList<Double>());
                         auctions.add(auction);
                         System.out.println(auctions.toString());
 
@@ -67,7 +67,7 @@ public class TCPServer {
 
                         Bid bid = new Bid(price, LocalTime.now(), auctions.get(0));
 
-                        auctions.get(0).allBids.add(bid);
+                        auctions.get(0).allBids.add(bid.price);
 
                         System.out.println(bid.toString());
                         System.out.println(auctions.get(0).toString());
