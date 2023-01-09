@@ -31,10 +31,9 @@ public class TCPClient {
 
 
             /* Get user's input */
-            myClient.messageToServer = myClient.inFromUser.readLine();
-
             /* Send the message to server */
-            myClient.outToServer.println(myClient.messageToServer);
+            service.sendToServer(myClient);
+            service.receiveFromServer(myClient);
 
 
 
@@ -43,8 +42,7 @@ public class TCPClient {
                 System.out.println("Goodbye");
                 break;
             }
-            /* Read the server's response and echo message*/
-            service.receiveFromServer(myClient);
+
 
             switch (myClient.serverResponse){
                 case "1":
@@ -105,6 +103,7 @@ public class TCPClient {
 
         }
 
-
+        System.out.println("Closing socket.");
+        myClient.clientSocket.close();
     }
 }

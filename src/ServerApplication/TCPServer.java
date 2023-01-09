@@ -31,7 +31,17 @@ public class TCPServer {
 
             /* Wait endlessly for specific client to type messages */
             while (true) {
-                service.receiveFromClient(myServer);
+
+                try {
+                    /* Read client's message through the socket's input buffer */
+                    service.receiveFromClient(myServer);
+                }
+                catch (IOException e) {
+                    System.out.println( myServer.clientSocket.getInetAddress() + " broke the connection." );
+                    break;
+                }
+
+
 
                 switch (myServer.clientSentence) {
 
@@ -80,6 +90,8 @@ public class TCPServer {
                         System.out.println(bid.toString());
                         System.out.println(auctions.get(0).toString());
 
+                        break;
+
                     case "6":
 
                         break;
@@ -90,24 +102,24 @@ public class TCPServer {
 
                 }
 
-//                if (myServer.clientSentence.equals("1")) {
-//                    service.sendToClient(myServer);
-//                    service.receiveFromClient(myServer);
-//
-//                }
-
-                /* If message is exit then terminate specific connection - exit the loop */
-//                if (myServer.clientSentence.equals("exit")) {
-//                    System.out.println("Closing connection with " + myServer.clientSocket.getInetAddress() + ".");
-//                    break;
-//                }
-
                 myServer.response = myServer.clientSentence;
 
                 /* Send it back through socket's output buffer */
                 myServer.outToClient.println(myServer.response);
 
             }
+
+            /* Close input stream */
+            myServer.inFromClient.close();
+
+            /* Close output stream */
+            myServer.outToClient.close();
+
+            /* Close TCP connection with client on specific port */
+            myServer.clientSocket.close();
+
+            /* Wait for more connections */
+            System.out.println( "Server waiting at port: " + myServer.serverSocket.getLocalPort() );
         }
     }
 }
