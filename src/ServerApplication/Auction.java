@@ -1,5 +1,7 @@
 package ServerApplication;
 
+import ClientApplication.Client;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Auction {
     String auctionType;
 
     List<Double> allBids;
+    List<Client> allClients; 
 
 
     public Auction(String auctionID, String name, double startingPrice, String auctionType, List<Double> bids) {
@@ -23,6 +26,18 @@ public class Auction {
         //this.highestBid = highestBid;
         this.auctionType = auctionType;
         this.allBids = bids;
+    }
+
+    public void setAllBids(List<Double> allBids) {
+        this.allBids = allBids;
+    }
+
+    public List<Client> getAllClients() {
+        return allClients;
+    }
+
+    public void setAllClients(List<Client> allClients) {
+        this.allClients = allClients;
     }
 
     public List<Double> getAllBids() {
