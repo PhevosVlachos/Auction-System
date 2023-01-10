@@ -3,6 +3,7 @@ package Services;
 import ClientApplication.Client;
 import ServerApplication.Auction;
 import ServerApplication.Bid;
+import ServerApplication.Handler;
 import ServerApplication.Server;
 
 import java.io.BufferedReader;
@@ -98,15 +99,14 @@ public class ServiceImplementation implements Service {
     }
 
     @Override
-    public void sendToClient(Server myServer) throws Exception {
-        myServer.setResponse( myServer.getClientSentence());
-        myServer.getOutToClient().println(myServer.getResponse());
+    public void sendToClient(Handler myHandler) throws Exception {
+
+
     }
 
     @Override
-    public void receiveFromClient(Server myServer) throws Exception {
-        myServer.setClientSentence(myServer.getInFromClient().readLine());
-        System.out.println("Message Received: " + myServer.getClientSentence());
+    public void receiveFromClient(Handler myHandler) throws Exception {
+
     }
 
     @Override
