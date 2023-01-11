@@ -115,7 +115,7 @@ public class ConnectionHandler implements Runnable {
                     System.out.println("Closing Type :" + closingType);
 
                     /* Create Auction */
-                    Auction auction = new Auction(name, startingPrice, closingType, new ArrayList<Bid>());
+                    Auction auction = new Auction(name, description, startingPrice, closingType, echoSocket.getInetAddress() ,new ArrayList<Bid>());
                     auctions.add(auction);
                     for (Auction a : auctions) {
                         a.setAuctionID(auctions.indexOf(a) + 1);
@@ -215,6 +215,7 @@ public class ConnectionHandler implements Runnable {
 
                             Bid bid = new Bid(price, LocalTime.now(), a);
                             a.allBids.add(bid);
+                            a.highestBid = price;
 
                             System.out.println(bid.toString());
                             System.out.println(a.toString());

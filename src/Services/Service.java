@@ -18,7 +18,7 @@ public interface Service {
     List<Auction> listAuctions();
 
 
-    Double checkHighest(Auction auction);
+//    Double checkHighest(Auction auction);
 
 
 //    void connectToServer(Client myClient, String serverMachine, int port) throws Exception;

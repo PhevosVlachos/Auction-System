@@ -150,13 +150,19 @@ public class MuTCPEchoClient
 							service.receiveFromServer(myHandler);
 							break;
 
+
+						case "7":
+							/* Stop infinite loop if user wants to stop getting echos by typing exit */
+							System.out.println("Goodbye");
+							break;
+
+						default:
+							System.out.println("Could not undestand request. Pleasy try again");
+							break;
+
 					}
 
-					/* Stop infinite loop if user wants to stop getting echos by typing exit */
-					if ( myHandler.messageToServer.equals( "7" ) ){
-						System.out.println("Goodbye");
-						break;
-					}
+
 
 
 			

@@ -9,20 +9,41 @@ public class Auction {
 
     int auctionID;
     String name;
+
+    String description;
     double startingPrice;
     double highestBid;
     String auctionType;
+
+    InetAddress sellerIP;
 
     List<Bid> allBids;
     List<InetAddress> clientID = new ArrayList<>();
 
 
-    public Auction(String name, double startingPrice, String auctionType, List<Bid> bids) {
+    public Auction(String name, String description, double startingPrice, String auctionType,  InetAddress sellerIP , List<Bid> bids) {
         this.name = name;
         this.startingPrice = startingPrice;
-        //this.highestBid = highestBid;
         this.auctionType = auctionType;
         this.allBids = bids;
+        this.description = description;
+        this.sellerIP = sellerIP;
+    }
+
+    public InetAddress getSellerIP() {
+        return sellerIP;
+    }
+
+    public void setSellerIP(InetAddress sellerIP) {
+        this.sellerIP = sellerIP;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setAllBids(List<Bid> allBids) {
@@ -83,12 +104,14 @@ public class Auction {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "auctionID='" + auctionID + '\'' +
+        return "Auction{" +
+                "auctionID=" + auctionID +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", startingPrice=" + startingPrice +
                 ", highestBid=" + highestBid +
                 ", auctionType='" + auctionType + '\'' +
+                ", sellerIP=" + sellerIP +
                 '}';
     }
 }

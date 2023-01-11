@@ -32,12 +32,12 @@ public class ServiceImplementation implements Service {
         return null;
     }
 
-    @Override
-    public Double checkHighest(Auction auction) {
-        List<Double> bids  = new ArrayList<Double>(auction.getAllBids());
-        Collections.sort(bids);
-        return bids.get(0);
-    }
+//    @Override
+//    public Double checkHighest(Auction auction) {
+//        List<Double> bids  = new ArrayList<Double>(auction.getAllBids());
+//        Collections.sort(bids);
+//        return bids.get(0);
+//    }
 
 //    @Override
 //    public void connectToServer(Client myClient, String serverMachine, int port) throws Exception {
