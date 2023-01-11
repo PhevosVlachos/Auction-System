@@ -10,6 +10,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ServerApplication.MuTCPEchoServer.auctions;
+
 public class ConnectionHandler implements Runnable {
     // Socket for our endpoint
     protected Socket echoSocket;
@@ -24,7 +26,6 @@ public class ConnectionHandler implements Runnable {
     public void run() {
         ServiceImplementation service = new ServiceImplementation();
         Handler myHandler = new Handler();
-        List<Auction> auctions = new ArrayList<>();
 
 
         // Attach a println/readLine interface to the socket so we can read and write strings to the socket.
@@ -51,13 +52,15 @@ public class ConnectionHandler implements Runnable {
                 break;
             }
 
+            /* Send it back through socket's output buffer */
+            myHandler.setResponse(myHandler.getClientSentence());
+            service.sendToClient(myHandler);
+
 
             switch (myHandler.getClientSentence()) {
 
                 case "1":
 
-					/* Send it back through socket's output buffer */
-                    service.sendToClient(myHandler);
                     try {
                         /* Read client's message through the socket's input buffer */
                         service.receiveFromClient(myHandler);
@@ -70,6 +73,7 @@ public class ConnectionHandler implements Runnable {
                     System.out.println("Name is:" + name);
 
                     /* Send it back through socket's output buffer */
+                    myHandler.setResponse(myHandler.getClientSentence());
                     service.sendToClient(myHandler);
                     try {
                         /* Read client's message through the socket's input buffer */
@@ -83,6 +87,7 @@ public class ConnectionHandler implements Runnable {
                     System.out.println("Description :" + description);
 
                     /* Send it back through socket's output buffer */
+                    myHandler.setResponse(myHandler.getClientSentence());
                     service.sendToClient(myHandler);
                     try {
                         /* Read client's message through the socket's input buffer */
@@ -96,6 +101,7 @@ public class ConnectionHandler implements Runnable {
                     System.out.println("Start Price :" + startingPrice);
 
                     /* Send it back through socket's output buffer */
+                    myHandler.setResponse(myHandler.getClientSentence());
                     service.sendToClient(myHandler);
                     try {
                         /* Read client's message through the socket's input buffer */
@@ -108,20 +114,23 @@ public class ConnectionHandler implements Runnable {
                     String closingType = myHandler.clientSentence;
                     System.out.println("Closing Type :" + closingType);
 
-					/* Create Auction */
-                    Auction auction = new Auction(service.auctionId(), name, startingPrice, closingType, new ArrayList<Double>());
+                    /* Create Auction */
+                    Auction auction = new Auction(name, startingPrice, closingType, new ArrayList<Bid>());
                     auctions.add(auction);
-                    System.out.println(auctions.toString());
+                    for (Auction a : auctions) {
+                        a.setAuctionID(auctions.indexOf(a) + 1);
+                    }
+                    System.out.println("Successfully created auction");
+
+                    /* Send it back through socket's output buffer */
+                    myHandler.setResponse(myHandler.getClientSentence());
+                    service.sendToClient(myHandler);
 
                     break;
                 case "2":
-                    service.sendToClient(myHandler);
 
-                    break;
+                    /* Send size of list to client */
 
-                case "4":
-                    /* Send it back through socket's output buffer */
-                    service.sendToClient(myHandler);
                     try {
                         /* Read client's message through the socket's input buffer */
                         service.receiveFromClient(myHandler);
@@ -129,18 +138,92 @@ public class ConnectionHandler implements Runnable {
                         System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
                         break;
                     }
+                    myHandler.setResponse(String.valueOf(auctions.size()));
+                    service.sendToClient(myHandler);
+
+
+                    for (Auction a : auctions) {
+
+                        myHandler.response = a.toString();
+
+                        service.sendToClient(myHandler);
+
+                        try {
+                            /* Read client's message through the socket's input buffer */
+                            service.receiveFromClient(myHandler);
+                        } catch (IOException e) {
+                            System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
+                            break;
+                        }
+                    }
+
+
+                    break;
+
+
+                case "3":
+                    try {
+                        /* Read client's message through the socket's input buffer */
+                        service.receiveFromClient(myHandler);
+                    } catch (IOException e) {
+                        System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
+                        break;
+                    }
+
+                    for (Auction a : auctions) {
+                        int id = a.getAuctionID();
+
+                        if (id == Integer.parseInt(myHandler.clientSentence)) {
+                            a.clientID.add(echoSocket.getInetAddress());
+                            System.out.println(a.clientID.get(0));
+                        }
+                    }
+
+                    service.sendToClient(myHandler);
+
+                    break;
+
+                case "4":
+                    try {
+                        /* Read client's message through the socket's input buffer */
+                        service.receiveFromClient(myHandler);
+                    } catch (IOException e) {
+                        System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
+                        break;
+                    }
+                    service.sendToClient(myHandler);
+
+                    int id = Integer.parseInt(myHandler.clientSentence);
+
+
+                    try {
+                        /* Read client's message through the socket's input buffer */
+                        service.receiveFromClient(myHandler);
+                    } catch (IOException e) {
+                        System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
+                        break;
+                    }
+                    service.sendToClient(myHandler);
+
+
                     double price = Double.parseDouble(myHandler.clientSentence);
                     System.out.println("Bidding price : " + price);
 
+                    for (Auction a : auctions) {
 
-                    Bid bid = new Bid(price, LocalTime.now(), auctions.get(0));
+                        if (a.auctionID == id) {
 
-                    auctions.get(0).allBids.add(bid.price);
+                            Bid bid = new Bid(price, LocalTime.now(), a);
+                            a.allBids.add(bid);
 
-                    System.out.println(bid.toString());
-                    System.out.println(auctions.get(0).toString());
+                            System.out.println(bid.toString());
+                            System.out.println(a.toString());
+                        }
+                    }
 
-                    service.sendToClient(myHandler);
+
+
+
 
                     break;
 
@@ -154,7 +237,6 @@ public class ConnectionHandler implements Runnable {
 
             }
 
-            service.sendToClient(myHandler);
 
 
             /* If message is exit then terminate specific connection - exit the loop */
@@ -162,6 +244,7 @@ public class ConnectionHandler implements Runnable {
 //					System.out.println( "Closing connection with " + echoSocket.getInetAddress() + "." );
 //					break;
 //				}
+
 
         }
 

@@ -11,7 +11,8 @@ import ClientApplication.ClientHandler;
 import Services.ServiceImplementation;
 
 import java.io.*; 
-import java.net.*; 
+import java.net.*;
+import java.sql.SQLOutput;
 
 
 public class MuTCPEchoClient
@@ -41,7 +42,7 @@ public class MuTCPEchoClient
             }
 
             System.out.println("<-- Connection established  -->");
-			System.out.println("Welcome to the Auction House!!!");
+			System.out.println("\nWelcome to the Auction House!!!");
             try
             {
                 /* Continue forever until user types 'exit' */
@@ -50,7 +51,7 @@ public class MuTCPEchoClient
 					
 					System.out.println
 							(
-									"What would you like to do?" + "\n" +
+									"\nWhat would you like to do?" + "\n" +
 									"1. Enlist An Item" + "\n" +
 									"2. List Active Auctions" + "\n" +
 									"3. Register In An Auction" + "\n" +
@@ -60,22 +61,27 @@ public class MuTCPEchoClient
 									"7. Disconnect" + "\n" + "\n" +
 									"Choose by typing 1-7:" + "\n"
 							);
-					        
+
+					service.getUserInput(myHandler);
 					service.sendToServer(myHandler);
 					service.receiveFromServer(myHandler);
+
 
 					switch (myHandler.serverResponse){
 						case "1":
 							System.out.println("Please input a name:");
+							service.getUserInput(myHandler);
 							service.sendToServer(myHandler);
 							service.receiveFromServer(myHandler);
 
 							System.out.println("Please enter a description for your item:");
+							service.getUserInput(myHandler);
 							service.sendToServer(myHandler);
 							service.receiveFromServer(myHandler);
 
 
 							System.out.println("Please enter a starting price:");
+							service.getUserInput(myHandler);
 							service.sendToServer(myHandler);
 							service.receiveFromServer(myHandler);
 
@@ -85,20 +91,52 @@ public class MuTCPEchoClient
 													"Set Time" + "\n" +
 													"Bid Time" + "\n "
 									);
+							service.getUserInput(myHandler);
 							service.sendToServer(myHandler);
 							service.receiveFromServer(myHandler);
 							break;
 
 						case "2":
 
+							/* receive list to be printed length */
+							service.sendToServer(myHandler);
 							service.receiveFromServer(myHandler);
+							service.printServerResponse(myHandler);
+
+							int lengthOfList = Integer.parseInt(myHandler.serverResponse);
+
+
+							System.out.println("\nThe List Of Active Auctions: ");
+
+							for (int i = 1; i <= lengthOfList; i++){
+
+								service.sendToServer(myHandler);
+								service.receiveFromServer(myHandler);
+								System.out.println(myHandler.serverResponse);
+
+
+							}
+
+
 							break;
 
 						case "3":
+							System.out.println("Please, specify auction ID:");
+							service.getUserInput(myHandler);
+							service.sendToServer(myHandler);
+							service.receiveFromServer(myHandler);
+							System.out.println("Done");
+
 							break;
 
 						case "4":
+							System.out.println("Please specify Auction. Provide ID: ");
+							service.getUserInput(myHandler);
+							service.sendToServer(myHandler);
+							service.receiveFromServer(myHandler);
+
 							System.out.println("Please select a bidding price: ");
+							service.getUserInput(myHandler);
 							service.sendToServer(myHandler);
 							service.receiveFromServer(myHandler);
 							break;

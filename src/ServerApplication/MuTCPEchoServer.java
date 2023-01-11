@@ -1,4 +1,4 @@
-/*
+package ServerApplication;/*
  * Filename: TCPEchoServer.java
  * Description: An echo server using connection-oriented delivery system (TCP).
  *              Receives character messages from clients which are capitalized
@@ -7,13 +7,19 @@
  *
  */
 
+import ServerApplication.Auction;
 import ServerApplication.ConnectionHandler;
 
 import java.io.*;
-import java.net.*; 
+import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MuTCPEchoServer
 {
+
+	static List<Auction> auctions = new ArrayList<>();
+
     /* This is the port on which the server is running */
     private int serverPort;
 	
@@ -68,7 +74,8 @@ public class MuTCPEchoServer
 	}  /* End handleClient method */
 
 	public static void main( String[] args ) throws Exception
-	{ 
+	{
+
 		/* The port the server is listening on */
 		int port;
 		

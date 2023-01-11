@@ -2,25 +2,22 @@ package ServerApplication;
 
 import ClientApplication.Client;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.net.InetAddress;
+import java.util.*;
 
 public class Auction {
 
-    String auctionID;
+    int auctionID;
     String name;
     double startingPrice;
     double highestBid;
     String auctionType;
 
-    List<Double> allBids;
-    List<Client> allClients; 
+    List<Bid> allBids;
+    List<InetAddress> clientID = new ArrayList<>();
 
 
-    public Auction(String auctionID, String name, double startingPrice, String auctionType, List<Double> bids) {
-        this.auctionID = auctionID;
+    public Auction(String name, double startingPrice, String auctionType, List<Bid> bids) {
         this.name = name;
         this.startingPrice = startingPrice;
         //this.highestBid = highestBid;
@@ -28,27 +25,27 @@ public class Auction {
         this.allBids = bids;
     }
 
-    public void setAllBids(List<Double> allBids) {
+    public void setAllBids(List<Bid> allBids) {
         this.allBids = allBids;
     }
 
-    public List<Client> getAllClients() {
-        return allClients;
+    public List<InetAddress> getClientID() {
+        return clientID;
     }
 
-    public void setAllClients(List<Client> allClients) {
-        this.allClients = allClients;
+    public void setClientID(List<InetAddress> clientID) {
+        this.clientID = clientID;
     }
 
-    public List<Double> getAllBids() {
+    public List<Bid> getAllBids() {
         return allBids;
     }
 
-    public String getAuctionID() {
+    public int getAuctionID() {
         return auctionID;
     }
 
-    public void setAuctionID(String auctionID) {
+    public void setAuctionID(int auctionID) {
         this.auctionID = auctionID;
     }
 

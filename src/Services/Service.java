@@ -12,11 +12,7 @@ import java.util.List;
 public interface Service {
 
 
-
-
-    Bid placeBid() ;
-
-
+    Bid placeBid();
 
 
     List<Auction> listAuctions();
@@ -28,19 +24,17 @@ public interface Service {
 //    void connectToServer(Client myClient, String serverMachine, int port) throws Exception;
 
 
+    void printServerResponse(ClientHandler myClientHandler);
 
-
-
+    void getUserInput(ClientHandler myClientHandler) throws IOException;
 
     void receiveFromClient(Handler myHandler) throws IOException;
 
-    void sendToClient(Handler myHandler)  ;
-    
+    void sendToClient(Handler myHandler);
+
     void sendToServer(ClientHandler myClientHandler) throws IOException;
-    
+
     void receiveFromServer(ClientHandler myClientHandler) throws IOException;
-
-
 
 
 }

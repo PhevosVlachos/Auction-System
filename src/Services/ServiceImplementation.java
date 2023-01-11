@@ -60,17 +60,18 @@ public class ServiceImplementation implements Service {
 //
 //    }
     
-    public String auctionId(){
-        byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
-        return new String(array, StandardCharsets.UTF_8);
-    }
+//    public int auctionId(){
+////        byte[] array = new byte[7]; // length is bounded by 7
+////        new Random().nextBytes(array);
+////        return new String(array, StandardCharsets.UTF_8);
+//
+//
+//    }
 
 
 
     @Override
     public void sendToClient(Handler myHandler)  {
-        myHandler.setResponse( myHandler.getClientSentence());
         myHandler.getOutToClient().println(myHandler.getResponse());
         System.out.println("Sent To Client:" + myHandler.getResponse());
     }
@@ -82,10 +83,13 @@ public class ServiceImplementation implements Service {
     }
 
     @Override
-    public void sendToServer(ClientHandler myClientHandler) throws IOException {
-
+    public void getUserInput(ClientHandler myClientHandler) throws IOException {
         /* Get user's input */
         myClientHandler.setMessageToServer(myClientHandler.getInFromUser().readLine());
+    }
+
+    @Override
+    public void sendToServer(ClientHandler myClientHandler) throws IOException {
 
         /* Send the message to server */
         myClientHandler.getOutToServer().println(myClientHandler.getMessageToServer());
@@ -97,6 +101,11 @@ public class ServiceImplementation implements Service {
         /* Read the server's response */
         myClientHandler.setServerResponse(myClientHandler.getInFromServer().readLine());
 
+
+    }
+
+    @Override
+    public void printServerResponse(ClientHandler myClientHandler) {
         /* Display echoed message from server */
         System.out.println("\nServer Responded:");
         System.out.println(myClientHandler.getServerResponse());
