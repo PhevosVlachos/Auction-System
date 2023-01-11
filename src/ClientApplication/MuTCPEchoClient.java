@@ -41,14 +41,17 @@ public class MuTCPEchoClient
             }
 
             System.out.println("<-- Connection established  -->");
+			System.out.println("Welcome to the Auction House!!!");
             try
             {
                 /* Continue forever until user types 'exit' */
-				/* Types sentences to the server which are returned capitalized */
+
 				while ( true ) {
 					
 					System.out.println
-							("\n" + "1. Enlist An Item" + "\n" +
+							(
+									"What would you like to do?" + "\n" +
+									"1. Enlist An Item" + "\n" +
 									"2. List Active Auctions" + "\n" +
 									"3. Register In An Auction" + "\n" +
 									"4. Place A Bid" + "\n" +

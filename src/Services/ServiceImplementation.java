@@ -68,11 +68,6 @@ public class ServiceImplementation implements Service {
 
 
 
-
-
-
-
-
     @Override
     public void sendToClient(Handler myHandler)  {
         myHandler.setResponse( myHandler.getClientSentence());

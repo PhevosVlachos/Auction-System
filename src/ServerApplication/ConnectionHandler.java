@@ -27,7 +27,7 @@ public class ConnectionHandler implements Runnable
 		List<Auction> auctions = new ArrayList<>();
 
 
-		// Attach a println/readLine interface to the socketso we can read and write strings to the socket.
+		// Attach a println/readLine interface to the socket so we can read and write strings to the socket.
 		try {
 			/* Get the IP address from the client */
 			myHandler.setPeerName(echoSocket.getInetAddress().getHostAddress());
