@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static ServerApplication.MuTCPEchoServer.auctions;
+
 public class ServiceImplementation implements Service {
 
 
@@ -69,6 +71,15 @@ public class ServiceImplementation implements Service {
 //    }
 
 
+    public Auction findById(int id){
+        for (Auction a:auctions) {
+            if (a.getAuctionID() == id)
+                return a;
+            else
+                return null;
+        }
+        return null;
+    }
 
     @Override
     public void sendToClient(Handler myHandler)  {

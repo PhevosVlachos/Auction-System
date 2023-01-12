@@ -205,21 +205,23 @@ public class ConnectionHandler implements Runnable {
                     try {
                         /* Read client's message through the socket's input buffer */
                         service.receiveFromClient(myHandler);
+                        int id = Integer.parseInt(myHandler.clientSentence);
+                        Auction a = service.findById(id);
+                        if (auctions.contains(a)) {
+                            a.clientID.add(echoSocket.getInetAddress());
+                            System.out.println(a.clientID.get(0));
+                        }
+                        else {
+                            System.out.println("Error");
+                        }
+                        service.sendToClient(myHandler);
                     } catch (IOException e) {
                         System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
                         break;
                     }
 
-                    for (Auction a : auctions) {
-                        int id = a.getAuctionID();
 
-                        if (id == Integer.parseInt(myHandler.clientSentence)) {
-                            a.clientID.add(echoSocket.getInetAddress());
-                            System.out.println(a.clientID.get(0));
-                        }
-                    }
 
-                    service.sendToClient(myHandler);
 
                     break;
 
