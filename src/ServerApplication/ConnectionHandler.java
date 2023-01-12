@@ -208,9 +208,11 @@ public class ConnectionHandler implements Runnable {
                         Auction a = service.findById(id);
                         if (auctions.contains(a)) {
                             a.clientID.add(echoSocket.getInetAddress());
-                            System.out.println(a.clientID.get(0));
+                            myHandler.setResponse(String.valueOf(a.clientID.get(0)));
                         } else {
                             System.out.println("Error");
+                            myHandler.setResponse("That auction is not available. Choose another.");
+                            service.sendToClient(myHandler);
                         }
                         service.sendToClient(myHandler);
                     } catch (IOException e) {
@@ -354,7 +356,26 @@ public class ConnectionHandler implements Runnable {
 
 
                     break;
-
+                case "5":
+                    try {
+                        service.receiveFromClient(myHandler);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    int auctionId = Integer.parseInt(myHandler.clientSentence);
+                    Auction a = service.findById(auctionId);
+                    if (auctions.contains(a)) {
+                        Double highestBid = service.highestBid(auctionId);
+                        service.sendToClient(myHandler);
+                        myHandler.setResponse(highestBid.toString());
+                        service.sendToClient(myHandler);
+                    }
+                    else {
+                        System.out.println("Error");
+                        myHandler.setResponse("That auction is not available. Choose another.");
+                        service.sendToClient(myHandler);
+                    }
+                    break;
                 case "6":
                     service.sendToClient(myHandler);
                     break;
