@@ -81,6 +81,17 @@ public class ServiceImplementation implements Service {
         return null;
     }
 
+    public Double checkHighest(Auction auction) {
+        List<Bid> bids  = auction.getAllBids();
+        List<Double> prices= new ArrayList<>();
+        for (Bid a:bids
+        ) {
+            prices.add(a.getPrice());
+        }
+        Collections.sort(prices);
+        return prices.get(0);
+    }
+
     @Override
     public void sendToClient(Handler myHandler)  {
         myHandler.getOutToClient().println(myHandler.getResponse());
