@@ -21,13 +21,13 @@ public class Auction {
     List<InetAddress> clientID = new ArrayList<>();
 
 
-    public Auction(String name, String description, double startingPrice, String auctionType,  InetAddress sellerIP , List<Bid> bids) {
+    public Auction(String name, String description, double startingPrice, String auctionType, InetAddress sellerIP, List<Bid> allBids) {
         this.name = name;
+        this.description = description;
         this.startingPrice = startingPrice;
         this.auctionType = auctionType;
-        this.allBids = bids;
-        this.description = description;
         this.sellerIP = sellerIP;
+        this.allBids = allBids;
     }
 
     public InetAddress getSellerIP() {
