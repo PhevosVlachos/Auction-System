@@ -18,7 +18,7 @@ import java.util.List;
 public class MuTCPEchoServer
 {
 
-	static List<Auction> auctions = new ArrayList<>();
+	public static List<Auction> auctions = new ArrayList<>();
 
     /* This is the port on which the server is running */
     private int serverPort;
