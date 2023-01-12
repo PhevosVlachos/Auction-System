@@ -319,66 +319,28 @@ public class ConnectionHandler implements Runnable {
                             }
                         }
 
-                        double highestBid = 0;
+
+                        for (Auction a : auctions) {
 
 
-                        while (highestBid >= price) {
-                            boolean lowBid = false;
-                            double num = Double.parseDouble(myHandler.clientSentence);
-                            if(num > highestBid){
-                            price = Double.parseDouble(myHandler.clientSentence);
-                            lowBid = false;
-                            }
-
-                            for (Auction a : auctions) {
+                            if (a.auctionID == id && a.getHighestBid() < price) {
 
 
-                                if (a.auctionID == id && a.getHighestBid() < price) {
-                                    highestBid = a.getHighestBid();
-                                    System.out.println(highestBid);
+                                Bid bid = new Bid(price, LocalTime.now(), a);
+                                a.allBids.add(bid);
+                                a.highestBid = price;
+                                System.out.println(bid.toString());
+                                System.out.println(a.toString());
 
-
-                                    Bid bid = new Bid(price, LocalTime.now(), a);
-                                    a.allBids.add(bid);
-                                    a.highestBid = price;
-                                    System.out.println(bid.toString());
-                                    System.out.println(a.toString());
-
-                                } else {
-                                    lowBid = true;
-                                }
-                            }
-
-                            if(lowBid){
-                                System.out.println("Low bid. Enter higher");
-                                myHandler.clientSentence = "Bid not high enough.";
-                                myHandler.setResponse(myHandler.getClientSentence());
-                                service.sendToClient(myHandler);
-                                try {
-                                    service.receiveFromClient(myHandler);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-
-
-                                System.out.println("Price is" + price);
-
-                                myHandler.setResponse(myHandler.getClientSentence());
-                                service.sendToClient(myHandler);
-
-                            } else {
-
-                                service.sendToClient(myHandler);
-                                try {
-                                    service.receiveFromClient(myHandler);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                }
                             }
                         }
 
-                    }
 
+                        myHandler.setResponse(myHandler.getClientSentence());
+                        service.sendToClient(myHandler);
+
+
+                    }
 
 
 

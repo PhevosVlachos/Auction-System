@@ -148,7 +148,7 @@ public class MuTCPEchoClient {
                         service.getUserInput(myHandler);
                         service.sendToServer(myHandler);
                         service.receiveFromServer(myHandler);
-                        System.out.println("Done");
+                        System.out.println(myHandler.serverResponse);
 
                         break;
 
@@ -199,6 +199,11 @@ public class MuTCPEchoClient {
                         break;
 
                     case "5":
+                        System.out.println("Please, specify auction ID:");
+                        service.getUserInput(myHandler);
+                        service.sendToServer(myHandler);
+                        service.receiveFromServer(myHandler);
+                        System.out.println("Highest bid for auction is: "+myHandler.serverResponse);
                         break;
 
                     case "6":

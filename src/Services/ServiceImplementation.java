@@ -1,22 +1,15 @@
 package Services;
 
 
-import ClientApplication.Client;
 import ClientApplication.ClientHandler;
 import ServerApplication.Auction;
 import ServerApplication.Bid;
 import ServerApplication.Handler;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static ServerApplication.MuTCPEchoServer.auctions;
 
@@ -79,6 +72,22 @@ public class ServiceImplementation implements Service {
                 return null;
         }
         return null;
+    }
+
+    public double highestBid(int id){
+       Auction a =  findById(id);
+       return a.getHighestBid();
+    }
+
+    public Double checkHighest(Auction auction) {
+        List<Bid> bids  = auction.getAllBids();
+        List<Double> prices= new ArrayList<>();
+        for (Bid a:bids
+        ) {
+            prices.add(a.getPrice());
+        }
+        Collections.sort(prices);
+        return prices.get(0);
     }
 
     @Override
