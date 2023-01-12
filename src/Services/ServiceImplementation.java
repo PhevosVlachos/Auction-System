@@ -1,28 +1,20 @@
 package Services;
 
-import ClientApplication.Client;
+
+import ClientApplication.ClientHandler;
 import ServerApplication.Auction;
 import ServerApplication.Bid;
-import ServerApplication.Server;
+import ServerApplication.Handler;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ServerApplication.MuTCPEchoServer.auctions;
+
 public class ServiceImplementation implements Service {
 
-
-    @Override
-    public Auction createAuction() {
-        return null;
-    }
 
     @Override
     public Bid placeBid() {
@@ -35,87 +27,107 @@ public class ServiceImplementation implements Service {
         return null;
     }
 
-    @Override
+//    @Override
+//    public Double checkHighest(Auction auction) {
+//        List<Double> bids  = new ArrayList<Double>(auction.getAllBids());
+//        Collections.sort(bids);
+//        return bids.get(0);
+//    }
+
+//    @Override
+//    public void connectToServer(Client myClient, String serverMachine, int port) throws Exception {
+//
+//        Socket clientSocket = new Socket(serverMachine, port);
+//        PrintStream outStream = new PrintStream(clientSocket.getOutputStream());
+//        BufferedReader inStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+//
+//
+//        myClient.setOutToServer(outStream);
+//        myClient.setInFromServer(inStream);
+//
+//
+//
+//        System.out.println
+//                ("\n--->> Connected to: " + clientSocket.getInetAddress()+ " on port " + port + " <<---\n\n" +
+//
+//                "Welcome to the Auction House!!! What would you like to do?" + "\n" + "\n"
+//                );
+//
+//    }
+    
+//    public int auctionId(){
+////        byte[] array = new byte[7]; // length is bounded by 7
+////        new Random().nextBytes(array);
+////        return new String(array, StandardCharsets.UTF_8);
+//
+//
+//    }
+
+
+    public Auction findById(int id){
+        for (Auction a:auctions) {
+            if (a.getAuctionID() == id)
+                return a;
+            else
+                return null;
+        }
+        return null;
+    }
+
+    public double highestBid(int id){
+       Auction a =  findById(id);
+       return a.getHighestBid();
+    }
+
     public Double checkHighest(Auction auction) {
-        List<Double> bids  = new ArrayList<Double>(auction.getAllBids());
-        Collections.sort(bids);
-        return bids.get(0);
+        List<Bid> bids  = auction.getAllBids();
+        List<Double> prices= new ArrayList<>();
+        for (Bid a:bids
+        ) {
+            prices.add(a.getPrice());
+        }
+        Collections.sort(prices);
+        return prices.get(0);
     }
 
     @Override
-    public void connectToServer(Client myClient, String serverMachine, int port) throws Exception {
-
-        Socket clientSocket = new Socket(serverMachine, port);
-        PrintStream outStream = new PrintStream(clientSocket.getOutputStream());
-        BufferedReader inStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-
-        myClient.setOutToServer(outStream);
-        myClient.setInFromServer(inStream);
-
-
-
-        System.out.println
-                ("\n--->> Connected to: " + clientSocket.getInetAddress()+ " on port " + port + " <<---\n\n" +
-
-                "Welcome to the Auction House!!! What would you like to do?" + "\n" + "\n"
-                );
-
-    }
-
-
-    @Override
-    public void acceptConnections(Server myServer) throws Exception {
-
-        myServer.setClientSocket(myServer.getServerSocket().accept());
-
-
-        BufferedReader inStream = new BufferedReader(new InputStreamReader(myServer.getClientSocket().getInputStream()));
-        PrintStream outStream = new PrintStream(myServer.getClientSocket().getOutputStream());
-
-
-        myServer.setInFromClient(inStream);
-        myServer.setOutToClient(outStream);
-
-        System.out.println("Accepted connection from: " + myServer.getClientSocket().getInetAddress());
-
-    }
-
-
-
-    @Override
-    public void runServer(Server myServer, int port) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(port);
-
-        myServer.setPort(port);
-        myServer.setServerSocket(serverSocket);
-
-
-        System.out.println("Server is up and running. Waiting on port " + serverSocket.getLocalPort());
+    public void sendToClient(Handler myHandler)  {
+        myHandler.getOutToClient().println(myHandler.getResponse());
+        System.out.println("Sent To Client:" + myHandler.getResponse());
     }
 
     @Override
-    public void sendToClient(Server myServer) throws Exception {
-        myServer.setResponse( myServer.getClientSentence());
-        myServer.getOutToClient().println(myServer.getResponse());
+    public void receiveFromClient(Handler myHandler) throws IOException {
+        myHandler.setClientSentence(myHandler.getInFromClient().readLine());
+        System.out.println("Message Received: " + myHandler.getClientSentence());
     }
 
     @Override
-    public void receiveFromClient(Server myServer) throws Exception {
-        myServer.setClientSentence(myServer.getInFromClient().readLine());
-        System.out.println("Message Received: " + myServer.getClientSentence());
+    public void getUserInput(ClientHandler myClientHandler) throws IOException {
+        /* Get user's input */
+        myClientHandler.setMessageToServer(myClientHandler.getInFromUser().readLine());
     }
 
     @Override
-    public void sendToServer(Client myClient) throws Exception {
-        myClient.setMessageToServer(myClient.getInFromUser().readLine());
-        myClient.getOutToServer().println(myClient.getMessageToServer());
+    public void sendToServer(ClientHandler myClientHandler) throws IOException {
+
+        /* Send the message to server */
+        myClientHandler.getOutToServer().println(myClientHandler.getMessageToServer());
     }
 
     @Override
-    public void receiveFromServer(Client myClient) throws Exception {
-        myClient.setServerResponse(myClient.getInFromServer().readLine());
+    public void receiveFromServer(ClientHandler myClientHandler) throws IOException {
+
+        /* Read the server's response */
+        myClientHandler.setServerResponse(myClientHandler.getInFromServer().readLine());
+
+
+    }
+
+    @Override
+    public void printServerResponse(ClientHandler myClientHandler) {
+        /* Display echoed message from server */
         System.out.println("\nServer Responded:");
-        System.out.println(myClient.getServerResponse());
+        System.out.println(myClientHandler.getServerResponse());
     }
 }

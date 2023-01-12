@@ -1,39 +1,72 @@
 package ServerApplication;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import ClientApplication.Client;
+
+import java.net.InetAddress;
+import java.util.*;
 
 public class Auction {
 
-    String auctionID;
+    int auctionID;
     String name;
+
+    String description;
     double startingPrice;
     double highestBid;
     String auctionType;
 
-    List<Double> allBids;
+    InetAddress sellerIP;
+
+    List<Bid> allBids;
+    List<InetAddress> clientID = new ArrayList<>();
 
 
-    public Auction(String auctionID, String name, double startingPrice, String auctionType, List<Double> bids) {
-        this.auctionID = auctionID;
+    public Auction(String name, String description, double startingPrice, String auctionType, InetAddress sellerIP, List<Bid> allBids) {
         this.name = name;
+        this.description = description;
         this.startingPrice = startingPrice;
-        //this.highestBid = highestBid;
         this.auctionType = auctionType;
-        this.allBids = bids;
+        this.sellerIP = sellerIP;
+        this.allBids = allBids;
     }
 
-    public List<Double> getAllBids() {
+    public InetAddress getSellerIP() {
+        return sellerIP;
+    }
+
+    public void setSellerIP(InetAddress sellerIP) {
+        this.sellerIP = sellerIP;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAllBids(List<Bid> allBids) {
+        this.allBids = allBids;
+    }
+
+    public List<InetAddress> getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(List<InetAddress> clientID) {
+        this.clientID = clientID;
+    }
+
+    public List<Bid> getAllBids() {
         return allBids;
     }
 
-    public String getAuctionID() {
+    public int getAuctionID() {
         return auctionID;
     }
 
-    public void setAuctionID(String auctionID) {
+    public void setAuctionID(int auctionID) {
         this.auctionID = auctionID;
     }
 
@@ -71,12 +104,14 @@ public class Auction {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "auctionID='" + auctionID + '\'' +
+        return "Auction{" +
+                "auctionID=" + auctionID +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", startingPrice=" + startingPrice +
                 ", highestBid=" + highestBid +
                 ", auctionType='" + auctionType + '\'' +
+                ", sellerIP=" + sellerIP +
                 '}';
     }
 }

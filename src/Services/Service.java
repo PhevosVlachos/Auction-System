@@ -1,47 +1,40 @@
 package Services;
 
 import ClientApplication.Client;
+import ClientApplication.ClientHandler;
 import ServerApplication.Auction;
 import ServerApplication.Bid;
-import ServerApplication.Server;
+import ServerApplication.Handler;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.List;
 
 public interface Service {
 
-    Auction createAuction();
 
-
-
-    Bid placeBid() ;
-
-
+    Bid placeBid();
 
 
     List<Auction> listAuctions();
 
 
-    Double checkHighest(Auction auction);
+//    Double checkHighest(Auction auction);
 
 
-    void connectToServer(Client myClient, String serverMachine, int port) throws Exception;
+//    void connectToServer(Client myClient, String serverMachine, int port) throws Exception;
 
 
-    void runServer(Server myServer, int port) throws Exception;
+    void printServerResponse(ClientHandler myClientHandler);
 
-    void acceptConnections(Server myServer) throws Exception;
+    void getUserInput(ClientHandler myClientHandler) throws IOException;
 
-    void receiveFromClient(Server myServer) throws Exception;
+    void receiveFromClient(Handler myHandler) throws IOException;
 
-    void sendToClient(Server myServer)  throws Exception;
-    
-    void sendToServer(Client myClient) throws Exception;
-    
-    void receiveFromServer(Client myClient) throws Exception;
+    void sendToClient(Handler myHandler);
 
+    void sendToServer(ClientHandler myClientHandler) throws IOException;
 
+    void receiveFromServer(ClientHandler myClientHandler) throws IOException;
 
 
 }
