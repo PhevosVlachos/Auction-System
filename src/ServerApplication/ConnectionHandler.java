@@ -57,7 +57,6 @@ public class ConnectionHandler implements Runnable {
             service.sendToClient(myHandler);
 
 
-
             switch (myHandler.getClientSentence()) {
 
 
@@ -210,8 +209,7 @@ public class ConnectionHandler implements Runnable {
                         if (auctions.contains(a)) {
                             a.clientID.add(echoSocket.getInetAddress());
                             System.out.println(a.clientID.get(0));
-                        }
-                        else {
+                        } else {
                             System.out.println("Error");
                         }
                         service.sendToClient(myHandler);
@@ -219,8 +217,6 @@ public class ConnectionHandler implements Runnable {
                         System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
                         break;
                     }
-
-
 
 
                     break;
@@ -234,7 +230,6 @@ public class ConnectionHandler implements Runnable {
                         System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
                         break;
                     }
-
 
 
                     int id = -1;
@@ -257,7 +252,7 @@ public class ConnectionHandler implements Runnable {
                     }
 
 
-                    while(true) {
+                    while (true) {
 
                         boolean auctionExists = false;
 
@@ -267,7 +262,6 @@ public class ConnectionHandler implements Runnable {
                             if (auctionID == Integer.parseInt(myHandler.clientSentence)) {
                                 auctionExists = true;
                             }
-
                         }
 
 
@@ -289,26 +283,24 @@ public class ConnectionHandler implements Runnable {
 
                         } else {
 
-                                myHandler.clientSentence = "Auction does not exist";
-                                myHandler.setResponse(myHandler.getClientSentence());
-                                service.sendToClient(myHandler);
+                            myHandler.clientSentence = "Auction does not exist";
+                            myHandler.setResponse(myHandler.getClientSentence());
+                            service.sendToClient(myHandler);
 
-                                try {
-                                    /* Read client's message through the socket's input buffer */
-                                    service.receiveFromClient(myHandler);
-                                } catch (IOException e) {
-                                    System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
-                                    break;
-                                }
+                            try {
+                                /* Read client's message through the socket's input buffer */
+                                service.receiveFromClient(myHandler);
+                            } catch (IOException e) {
+                                System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
+                                break;
+                            }
 
                         }
 
                     }
 
 
-
                     double price = -1;
-
 
 
                     while (price == -1) {
@@ -326,29 +318,77 @@ public class ConnectionHandler implements Runnable {
                                 throw new RuntimeException(ex);
                             }
                         }
-                    }
+
+                        double highestBid = 0;
 
 
+                        while (highestBid >= price) {
+                            boolean lowBid = false;
+                            double num = Double.parseDouble(myHandler.clientSentence);
+                            if(num > highestBid){
+                            price = Double.parseDouble(myHandler.clientSentence);
+                            lowBid = false;
+                            }
+
+                            for (Auction a : auctions) {
 
 
+                                if (a.auctionID == id && a.getHighestBid() < price) {
+                                    highestBid = a.getHighestBid();
+                                    System.out.println(highestBid);
 
-                    for (Auction a : auctions) {
 
-                        if (a.auctionID == id) {
+                                    Bid bid = new Bid(price, LocalTime.now(), a);
+                                    a.allBids.add(bid);
+                                    a.highestBid = price;
+                                    System.out.println(bid.toString());
+                                    System.out.println(a.toString());
 
-                            Bid bid = new Bid(price, LocalTime.now(), a);
-                            a.allBids.add(bid);
-                            a.highestBid = price;
+                                } else {
+                                    lowBid = true;
+                                }
+                            }
 
-                            System.out.println(bid.toString());
-                            System.out.println(a.toString());
+                            if(lowBid){
+                                System.out.println("Low bid. Enter higher");
+                                myHandler.clientSentence = "Bid not high enough.";
+                                myHandler.setResponse(myHandler.getClientSentence());
+                                service.sendToClient(myHandler);
+                                try {
+                                    service.receiveFromClient(myHandler);
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+
+
+                                System.out.println("Price is" + price);
+
+                                myHandler.setResponse(myHandler.getClientSentence());
+                                service.sendToClient(myHandler);
+
+                            } else {
+
+                                service.sendToClient(myHandler);
+                                try {
+                                    service.receiveFromClient(myHandler);
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            }
                         }
+
                     }
 
-                    /* Send it back through socket's output buffer */
-                    myHandler.setResponse(myHandler.getClientSentence());
 
-                    service.sendToClient(myHandler);
+
+
+
+
+
+
+
+
+
 
 
                     break;

@@ -189,6 +189,13 @@ public class MuTCPEchoClient {
                             service.sendToServer(myHandler);
                             service.receiveFromServer(myHandler);
                         }
+
+                        while (myHandler.serverResponse.equals("Bid not high enough.")) {
+                            System.out.println("Please place a higher bid :");
+                            service.getUserInput(myHandler);
+                            service.sendToServer(myHandler);
+                            service.receiveFromServer(myHandler);
+                        }
                         break;
 
                     case "5":
