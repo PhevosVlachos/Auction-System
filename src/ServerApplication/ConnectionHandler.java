@@ -247,9 +247,49 @@ public class ConnectionHandler implements Runnable {
                         System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
                         break;
                     }
-                    service.sendToClient(myHandler);
 
-                    int id = Integer.parseInt(myHandler.clientSentence);
+
+
+
+                    int id = -1;
+
+                    while (id == -1) {
+                        try {
+                            id = Integer.parseInt(myHandler.clientSentence);
+                            System.out.println("Id is :" + id);
+                        } catch (Exception e) {
+                            System.out.println("Not a valid id. Requesting id from client:");
+                            myHandler.clientSentence = "try again";
+                            myHandler.setResponse(myHandler.getClientSentence());
+                            service.sendToClient(myHandler);
+                            try {
+                                service.receiveFromClient(myHandler);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+
+                    boolean auctionExists = false;
+
+                    for(Auction a : auctions) {
+                        int auctionID = a.getAuctionID();
+                        if(auctionID == Integer.parseInt(myHandler.clientSentence)){
+                         auctionExists = true;
+                        }
+                    }
+
+                    if(auctionExists){
+                        /* Send it back through socket's output buffer */
+                        myHandler.setResponse(myHandler.getClientSentence());
+                        service.sendToClient(myHandler);
+                    } else {
+                        myHandler.clientSentence = "Auction does not exist";
+                        myHandler.setResponse(myHandler.getClientSentence());
+                        service.sendToClient(myHandler);
+                    }
+
+
 
 
                     try {
@@ -259,11 +299,29 @@ public class ConnectionHandler implements Runnable {
                         System.out.println(echoSocket.getInetAddress() + "-" + myHandler.peerName + " broke the connection.");
                         break;
                     }
-                    service.sendToClient(myHandler);
+
+                    double price = -1;
+
+                    while (price == -1) {
+                        try {
+                            price = Integer.parseInt(myHandler.clientSentence);
+                            System.out.println("Bidding Price is :" + price);
+                        } catch (Exception e) {
+                            System.out.println("Not a valid price. Requesting price from client:");
+                            myHandler.clientSentence = "try again";
+                            myHandler.setResponse(myHandler.getClientSentence());
+                            service.sendToClient(myHandler);
+                            try {
+                                service.receiveFromClient(myHandler);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
 
 
-                    double price = Double.parseDouble(myHandler.clientSentence);
-                    System.out.println("Bidding price : " + price);
+
+
 
                     for (Auction a : auctions) {
 
@@ -277,6 +335,11 @@ public class ConnectionHandler implements Runnable {
                             System.out.println(a.toString());
                         }
                     }
+
+                    /* Send it back through socket's output buffer */
+                    myHandler.setResponse(myHandler.getClientSentence());
+
+                    service.sendToClient(myHandler);
 
 
                     break;

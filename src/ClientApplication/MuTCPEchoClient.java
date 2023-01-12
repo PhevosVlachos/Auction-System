@@ -157,11 +157,26 @@ public class MuTCPEchoClient {
                         service.getUserInput(myHandler);
                         service.sendToServer(myHandler);
                         service.receiveFromServer(myHandler);
+                        System.out.println(myHandler.getServerResponse());
+
+                        while (myHandler.serverResponse.equals("try again")) {
+                            System.out.println("Not a valid id. Try again: ");
+                            service.getUserInput(myHandler);
+                            service.sendToServer(myHandler);
+                            service.receiveFromServer(myHandler);
+                        }
 
                         System.out.println("Please select a bidding price: ");
                         service.getUserInput(myHandler);
                         service.sendToServer(myHandler);
                         service.receiveFromServer(myHandler);
+
+                        while (myHandler.serverResponse.equals("try again")) {
+                            System.out.println("Not a valid price. Try again: ");
+                            service.getUserInput(myHandler);
+                            service.sendToServer(myHandler);
+                            service.receiveFromServer(myHandler);
+                        }
                         break;
 
                     case "5":
